@@ -1,0 +1,89 @@
+@keyframes spinner {
+    0% {transform: translate(-50%, -50%) rotate(0)}
+    0% {transform: translate(-50%, -50%) rotate(360deg)}
+}
+.video-container {
+    position: relative;
+    background: #000;
+}
+.video-container video {
+    width: 100%;
+    height: 100%;
+    /* min-width: 638px;
+    min-height: 447px; */
+}
+.video-container .video {
+    position: relative;
+}
+.video-container .video-control-wrap {
+    position: relative;
+    color: #fff;
+    width: 100%;
+    font-size: 14px;
+    height: 44px;
+}
+.video-container .video-control-wrap .video-control-mask{
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,1));
+    opacity: 0.5;
+    bottom: 0;
+}
+.video-container .video-control-wrap .video-control{
+    display: flex;
+    position: relative;
+    padding: 0 20px;
+    height: 44px;
+    align-items: center;
+    justify-content: space-between;
+}
+.video-container .video-control-wrap .video-control .video-control-left{
+    display: flex;
+    justify-content: flex-start;
+}
+.video-container .video-control-wrap .video-control .video-control-center{
+    display: flex;
+}
+.video-container .video-control-wrap .video-control .video-control-right{
+    display: flex;
+    justify-content: flex-end;
+}
+.video-container .video-control-wrap  .video-control .video-control-item {
+    margin: 0 12px;
+}
+.video-container .video-control-wrap .video-control i:hover{
+    color: #ed6c00;
+    cursor: pointer;
+    transition: color .2s;
+}
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+ul li {
+    white-space: nowrap;
+    height: 32px;
+    line-height: 32px;
+    transition: color .2s;
+    cursor: pointer;
+}
+ul li:hover, ul li.active{
+    color: #ed6c00;
+}
+.video-container .video-loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+.video-container .video-loading i{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    color: #ed6c00;
+    animation: spinner 2s infinite linear;
+}

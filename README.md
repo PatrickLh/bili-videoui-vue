@@ -41,3 +41,17 @@ See [Configuration Reference](https://cli.vuejs.org/config/). -->
 未来计划扩展功能包括但不限于：
 > 1. 视频弹幕支持
 > 2. 视频进度条关键帧图片显示
+
+
+参数配置：
+npm安装模块以后，直接引入组件
+> import Video from 'bili-videoui-vue'
+
+组件支持参数如下：
+url: 视频的播放地址（可以是直播流或者非直播流）
+type: 视频格式
+config: 视频播放参数配置
+isLive: 是否是直播模式
+
+直播模式下可以配置以下参数：
+beginTime: 直播模式下视频直播开始时间，用于直播室持续时间的显示

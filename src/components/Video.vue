@@ -47,7 +47,7 @@ export default {
         beginTime: {
             type: Number,
             default: 0,
-        }
+        },
     },
     data () {
         return {

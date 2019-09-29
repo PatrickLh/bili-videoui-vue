@@ -4,26 +4,28 @@
             <div class="video-loading" v-if="loading">
                 <i class="fa fa-spinner" aria-hidden="true"></i>
             </div>
+            <div class="video-play" v-if="!loading && pause" @click="handleTogglePlay">
+                <div class="video-play-wrapper"></div>
+                <div><i class="fa fa-play-circle" aria-hidden="true"></i></div>
+            </div>
             <video id="video" ref="video"></video>
         </div>
-        <LiveControls 
+        <LiveControls
             :controls="initConfig.controls" 
             :pause="pause"
             :fullscreen="fullscreen"
             :visible="controlVisible"
+            :beginTime="beginTime"
             @changeChannel="handleChangeChannel"
             @changeClarity="handleChangeClarity"
+            @changeFullScreen="handleFullScreenChange"
             @togglePlay="handleTogglePlay"></LiveControls>
-        <div class="video-pause" v-if="!loading && pause" @click="togglePlay">
-            <div class="video-pause-wrapper"></div>
-            <div><i class="fa fa-pause" aria-hidden="true"></i></div>
-        </div>
     </div>
 </template>
 <script>
 import flvjs from 'flv.js'
 import LiveControls from './controls/LiveControls'
-import { isFullScreen, exitFullscreen, launchFullscreen } from './utils/utils';
+import { isFullScreen, exitFullscreen, launchFullscreen } from './utils';
 import config from './config';
 export default {
     components: { LiveControls },
@@ -42,6 +44,10 @@ export default {
                 return {}
             },
         },
+        beginTime: {
+            type: Number,
+            default: 0,
+        }
     },
     data () {
         return {
@@ -56,6 +62,10 @@ export default {
         // 初始化配置文件
         this.initConfig = Object.assign({}, config, this.config || {});
     },
+    mounted () {
+        this.initPlayer();
+        this.addEventListener();
+    },
     watch: {
         url: {
             handler (newVal) {
@@ -64,9 +74,6 @@ export default {
                 }
             },
         },
-    },
-    mounted () {
-        this.addEventListener()
     },
     methods: {
         initPlayer () {
@@ -111,7 +118,7 @@ export default {
             let containerEl = this.$refs.container;
             let tick = null
             videoEl.addEventListener('click', () => {
-                this.togglePlay()
+                this.handleTogglePlay()
             })
             videoEl.addEventListener('canplay', () => {
                 this.loading = false

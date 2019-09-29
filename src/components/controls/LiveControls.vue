@@ -1,13 +1,13 @@
 <template>
-    <div class="video-control-wrap">
-        <div class="video-control-mask"></div>
-        <transition name="fade">
-            <div class="video-control" v-if="controls.show && visible">
+    <transition name="fade">
+        <div class="video-control-wrap"  v-if="controls.show && visible">
+            <div class="video-control-mask"></div>
+            <div class="video-control">
                 <div class="video-control-left">
                     <div class="video-control-item" @click="handleTogglePlay">
                         <i :class="['fa', {'fa-pause': !pause, 'fa-play': pause}]" aria-hidden="true" @click="handleTogglePlay"></i>
                     </div>
-                    <div class="video-control-item video-duration">10:00:00</div>
+                    <div class="video-control-item video-duration">{{duration}}</div>
                     <div class="video-control-item" v-show="onlineMemberNum">{{onlineMemberNum || 0}}人在线</div>
                 </div>
                 <div class="video-control-center"></div>
@@ -32,16 +32,16 @@
                     </div>
                     <!-- 全屏切换 -->
                     <div class="video-control-item fullscreen-change" @click="changeFullScreen">
-                        <i class="fa fa-expand" aria-hidden="true" v-if="!fullscreen"></i>
-                        <i class="fa fa-compress" aria-hidden="true" v-if="fullscreen"></i>
+                        <i :class="['fa', {'fa-expand': !fullscreen, 'fa-compress': fullscreen}]"></i>
                     </div>
                 </div>
             </div>
-        </transition>
-    </div>
+        </div>
+    </transition>
 </template>
 <script>
 import Popover from './Popover'
+import { formatter } from '../utils'
 export default {
     components: { Popover },
     props: {
@@ -62,6 +62,10 @@ export default {
         visible: {
             type: Boolean,
             default: false,
+        },
+        beginTime: {
+            type: Number,
+            default: 0,
         }
     },
     data () {
@@ -69,8 +73,21 @@ export default {
             channel: this.controls.CHANNELS[0].label,
             clarity: this.controls.CLARITIES[0].label,
             onlineNum: 0,
-            duration: 0,
             onlineMemberNum: 0,
+            duration: '',
+            tick: null,
+        }
+    },
+    mounted() {
+        this.tick = setInterval(() => {
+            if (this.beginTime) {
+                this.duration = formatter(Date.now() - this.beginTime);
+            }
+        }, 1000);
+    },
+    destroyed() {
+        if (this.tick) {
+            clearInterval(this.tick);
         }
     },
     methods: {
@@ -92,8 +109,10 @@ export default {
         },
         handleTogglePlay () {
             this.$emit('togglePlay')
+        },
+        calcDuration() {
         }
-    }
+    },
 }
 </script>
 <style lang="">

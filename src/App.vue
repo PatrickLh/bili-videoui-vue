@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <Video url="./assets/success.flv"/>
+    <Video url="http://flv4275c5f7.live.126.net/live/ea168070cbf84ee2831a4dabd7a1b011_S2.flv?netease=flv4275c5f7.live.126.net"
+    :beginTime="beginTime"/>
+    <button @click="handleClick">addBeginTime</button>
+    {{beginTime}}
   </div>
 </template>
 
@@ -11,6 +14,16 @@ export default {
   name: 'app',
   components: {
     Video
+  },
+  data () {
+    return {
+      beginTime: 0
+    }
+  },
+  methods: {
+    handleClick() {
+      this.beginTime = this.beginTime ? this.beginTime + 1000 :  Date.now();
+    }
   }
 }
 </script>

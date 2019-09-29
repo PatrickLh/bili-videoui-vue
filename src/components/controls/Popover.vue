@@ -1,7 +1,7 @@
 <template>
     <div class="popover" @mouseover="doHover(true)" @mouseleave="doHover(false)">
         <transition name="fade">
-            <div class="content" v-show="hover">
+            <div class="content" v-show="hover" @click="doHover(false)">
                 <slot name="content"></slot>
             </div>
         </transition>

@@ -33,9 +33,18 @@ function exitFullscreen () {
 function isFullScreen () {
     return document.fullscreen || document.isFullScreen
 }
+
+function formatter (millionSecond) {
+    let hh = Math.floor(millionSecond / 1000 / 3600)
+    let mm = Math.floor((millionSecond / 1000 / 60) % 60) + ''
+    let ss = Math.floor(millionSecond / 1000 % 60) + ''
+    return `${hh ? hh + ':' : ''}${mm.padStart(2, '0')}:${ss.padStart(2, '0')}`
+}
+
 export {
     suffix,
     launchFullscreen,
     exitFullscreen,
-    isFullScreen
+    isFullScreen,
+    formatter
 }

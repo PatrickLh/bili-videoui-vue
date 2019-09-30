@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <div class="video-control-wrap"  v-if="controls.show && visible">
+        <div class="video-control-wrap" v-if="controls.show && visible">
             <div class="video-control-mask"></div>
             <div class="video-control">
                 <div class="video-control-left">
@@ -12,8 +12,10 @@
                 </div>
                 <div class="video-control-center"></div>
                 <div class="video-control-right">
+                    <!-- 音量调节 -->
+                    <VoiceControl v-if="controls.showVolume" :volume="volume" @changeVolume="handleChangeVolume"></VoiceControl>
                     <!-- 频道切换 -->
-                    <div class="video-control-item channel-change" v-if="controls.CHANNELS">
+                    <div class="video-control-item channel-change" v-if="controls.CHANNELS && controls.showChannels">
                         <Popover>
                             <span slot="label">{{channel}}</span>
                             <ul slot="content">
@@ -22,7 +24,7 @@
                         </Popover>
                     </div>
                     <!-- 清晰度切换 -->
-                    <div class="video-control-item clarity-change" v-if="controls.CLARITIES">
+                    <div class="video-control-item clarity-change" v-if="controls.CLARITIES && controls.showClarities">
                         <Popover>
                             <span slot="label">{{clarity}}</span>
                             <ul slot="content">
@@ -40,10 +42,11 @@
     </transition>
 </template>
 <script>
-import Popover from './Popover'
+import Popover from './Popover';
+import VoiceControl from './VoiceControl';
 import { formatter } from '../utils'
 export default {
-    components: { Popover },
+    components: { Popover, VoiceControl },
     props: {
         controls: {
             type: Object,
@@ -66,6 +69,10 @@ export default {
         beginTime: {
             type: Number,
             default: 0,
+        },
+        volume: {
+            type: Number,
+            default: 1,
         }
     },
     data () {
@@ -76,14 +83,11 @@ export default {
             onlineMemberNum: 0,
             duration: '',
             tick: null,
+            i: 0.1,
         }
     },
     mounted() {
-        this.tick = setInterval(() => {
-            if (this.beginTime) {
-                this.duration = formatter(Date.now() - this.beginTime);
-            }
-        }, 1000);
+        this.calcDuration();
     },
     destroyed() {
         if (this.tick) {
@@ -111,7 +115,15 @@ export default {
             this.$emit('togglePlay')
         },
         calcDuration() {
-        }
+            this.tick = setInterval(() => {
+                if (this.beginTime) {
+                    this.duration = formatter(Date.now() - this.beginTime);
+                }
+            }, 1000);
+        },
+        handleChangeVolume (val) {
+            this.$emit('changeVolume', val);
+        },
     },
 }
 </script>

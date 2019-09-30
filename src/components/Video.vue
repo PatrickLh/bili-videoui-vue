@@ -16,14 +16,17 @@
             :fullscreen="fullscreen"
             :visible="controlVisible"
             :beginTime="beginTime"
+            :volume="volume"
             @changeChannel="handleChangeChannel"
             @changeClarity="handleChangeClarity"
             @changeFullScreen="handleFullScreenChange"
+            @changeVolume="handleVolumeChange"
             @togglePlay="handleTogglePlay"></LiveControls>
     </div>
 </template>
 <script>
 import flvjs from 'flv.js'
+import _ from 'lodash'
 import LiveControls from './controls/LiveControls'
 import { isFullScreen, exitFullscreen, launchFullscreen } from './utils';
 import config from './config';
@@ -56,15 +59,18 @@ export default {
             loading: false,
             fullscreen: false,
             controlVisible: false,
+            volume: 1,
         }
     },
     created () {
         // 初始化配置文件
-        this.initConfig = Object.assign({}, config, this.config || {});
+        this.initConfig = _.assignIn({}, config, this.config);
+        console.log(this.initConfig)
     },
     mounted () {
         this.initPlayer();
         this.addEventListener();
+        this.volume = this.$refs.video.volume;
     },
     watch: {
         url: {
@@ -159,6 +165,10 @@ export default {
                 launchFullscreen(this.$refs.container);
                 this.fullscreen = true;
             }
+        },
+        handleVolumeChange (val) {
+            this.$refs.video.volume = val; // 获取0 - 1之间的值
+            this.volume = Number(val)
         }
     }
 }

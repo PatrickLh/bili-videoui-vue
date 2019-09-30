@@ -41,10 +41,14 @@ function formatter (millionSecond) {
     return `${hh ? hh + ':' : ''}${mm.padStart(2, '0')}:${ss.padStart(2, '0')}`
 }
 
+function between (val, min, max) {
+    return Math.min(max, Math.max(val, min));
+}
 export {
     suffix,
     launchFullscreen,
     exitFullscreen,
     isFullScreen,
-    formatter
+    formatter,
+    between
 }

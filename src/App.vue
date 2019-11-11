@@ -3,8 +3,8 @@
     <Video url="http://flv4275c5f7.live.126.net/live/ea168070cbf84ee2831a4dabd7a1b011_S2.flv?netease=flv4275c5f7.live.126.net"
     :beginTime="beginTime"
     :config="config"/>
-    <button @click="handleClick">addBeginTime</button>
-    {{beginTime}}
+    <!-- <button @click="handleClick">addBeginTime</button>
+    {{beginTime}} -->
   </div>
 </template>
 
